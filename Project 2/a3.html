@@ -1,0 +1,226 @@
+<html>
+<head>
+	<title>Assignment</title>
+	<link rel="stylesheet" type="text/css" href="./Assets/default.css">
+	<script>
+		window.onscroll = function() {scrollFunction()};
+
+		function scrollFunction() {
+			if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+				document.getElementById("myBtn").style.display = "block";
+				document.getElementById("toc").style.display = "none";
+			} else {
+				document.getElementById("myBtn").style.display = "none";
+				document.getElementById("toc").style.display = "block";
+			}
+		}
+
+		function topFunction() {
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		}
+	</script>
+
+</head>
+<body>
+	<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+	<div style="height:100%; width:100%;">
+			<div id="toc">
+		<center>
+			<h2>Table Of Contents</h2>
+			<div>
+				<ul>
+					<li><a href="#FigureOne">Figure One</a></li>
+					<li><a href="#FigureTwo">Figure Two</a></li>
+					<li><a href="#FigureThree">Figure Three</a></li>
+					<li><a href="#ImageOne">Image One</a></li>
+					<li><a href="#ImageTwo">Image Two</a></li>
+				</ul>
+			</div>
+		</center>
+			</div>
+	</div>
+
+	<div id="FigureOne" style="min-height:100%;width:100%;">
+		<center>
+			<h2>Figure 1</h2>
+		</center>
+		<br>
+		<div style="width: 100%;" class="inner">
+		<center>
+			<embed src="f1.html" height="550" width="1000">
+		</center>
+		</div>
+		<br>
+		<div style="width: 100%;" class="inner">
+		<center>
+		<table style="width:70%; border: 1px solid black;">
+			<tr>
+				<th>Primary identifier of planet</th>
+				<th>Period [days]</th>
+			</tr>
+			<tr>
+				<td>HD 143761 b</td>
+				<td>39.85</td>
+			</tr>
+			<tr>
+				<td>HD 143761 c</td>
+				<td>102.54</td>
+			</tr>
+			<tr>
+				<td>KOI-1843.03</td>
+				<td>0.18</td>
+			</tr>
+			<tr>
+				<td>KOI-1843.01</td>
+				<td>4.19</td>
+			</tr>
+			<tr>
+				<td>KOI-1843.02</td>
+				<td>6.36</td>
+			</tr>
+			<tr>
+				<td>Kepler-9 b</td>
+				<td>19.22</td>
+			</tr>
+			<tr>
+				<td>Kepler-9 c</td>
+				<td>39.03</td>
+			</tr>
+			<tr>
+				<td>Kepler-9 d</td>
+				<td>0.03</td>
+			</tr>
+			<tr>
+				<td>GJ 160.2 b</td>
+				<td>5.24</td>
+			</tr>
+			<tr>
+				<td>Kepler-566 b</td>
+				<td>18.43</td>
+			</tr>					
+		</table>
+		<br>
+			<p style="width:60%;"><b>Description: </b>Planet HD 143761 C has been confirmed longer than other 9 planets that are taken into account. While Planet HD 143761 b was discovered 40 days ago, planet KOI-1843.03 and KOI-1843.01 are on controversial state for 1 day and 5 days respectively. In addition to that KOI-1843.02, Kepler-9 b, Kepler-9 c, Kepler-9 d planets are confirmed within 40 days by transit source. Last two planets (GJ 160.2 b, Kepler-566 b) are also new compare to other planets which are 6 and 19 days.</p>
+		</center>
+		</div>
+	</div>
+		<div id="FigureTwo" style="min-height:100%;width:100%;">
+		<center>
+			<h2>Figure 2</h2>
+		</center>
+		<br>
+		<div style="width: 60%;" class="inner">
+			<center>
+				<embed src="f2.html" height="400" width="600">
+			</center>
+		</div>
+		<div style="width: 35%;" class="inner">
+			<table style="width:100%; border: 1px solid black;">
+				<tr>
+					<th>Primary identifier of plane</th>
+					<th>Planetary mass [Jupiter masses]</th>
+				</tr>
+				<tr>
+					<td>HD 143761 b</td>
+					<td>1.05</td>
+				</tr>
+				<tr>
+					<td>HD 143761 c</td>
+					<td>0.08</td>
+				</tr>
+				<tr>
+					<td>KOI-1843.03</td>
+					<td>0.00</td>
+				</tr>
+				<tr>
+					<td>KOI-1843.0</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>KOI-1843.02</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Kepler-9 b</td>
+					<td>0.25</td>
+				</tr>
+				<tr>
+					<td>Kepler-9 c</td>
+					<td>0.17</td>
+				</tr>
+				<tr>
+					<td>Kepler-9 d</td>
+					<td>0.02</td>
+				</tr>
+				<tr>
+					<td>GJ 160.2 b</td>
+					<td>0.03</td>
+				</tr>
+				<tr>
+					<td>Kepler-566 </td>
+					<td></td>
+				</tr>
+			</table>
+			<br>
+			<center>
+				<p style="width:100%;"><b>Description: </b>The data illustrates that Planet HD 143761 b has greater mass (1.05) than any other planets among the 10 planets. Though KOI-1843.01, KOI-1843.02 and Kepler-566 b are not known in terms of their mass KOI-1843.03 is the smallest one (0.00). HD 143761 c, Kepler-9 b, Kepler-9 c, Kepler-9 d, GJ 160.2 b have mass like 0.08,0.25,0.17,0.02,0.03 gradually.</p>
+			</center>
+		</div>
+	</div>
+	<div id="FigureThree" style="min-height:100%;width:100%;border:">
+		<center>
+			<h2>Figure 3</h2>
+		</center>
+		<br>
+		<div style="width: 60%;text-align:center;" class="inner">
+			<center>
+				<embed src="f3.html" height="600" width="600">
+			</center>
+		</div>
+		<div style="width: 35%;" class="inner">
+			<table style="width:100%; border: 1px solid black;">
+				<tr>
+					<th>Planet detection status list</th>
+					<th>Type</th>
+				</tr>
+				<tr>
+					<td>Confirmed planets</td>
+					<td>60</td>
+				</tr>
+				<tr>
+					<td>Controversial</td>
+					<td>30</td>
+				</tr>
+				<tr>
+					<td>Not defined</td>
+					<td>10</td>
+				</tr>
+			</table>
+			<br>
+			<center>
+				<p style="width:100%;"><b>Description: </b>Among 10 planets 4 planets are not confirmed yet which are KOI-1843.03, KOI-1843.01, GJ 160.2 b and Kepler-566 b. while other six planets (HD 143761 b, HD 143761 c, Kepler-9 b, Kepler-9 c, Kepler-9 d, Kepler-566 b) are determined through either RV or transit method.</p>
+			</center>
+		</div>
+	</div>
+	<div id="ImageOne" style="min-height:100%;width:100%;border:">
+		<center>
+			<h2>Image 1</h2>
+		<br>
+		<img src="./Assets/ImageOne.jpg" height="300px" width="500px" />
+		<p style="width: 50%; text-align:center; font-size:18px;">
+			The data shows clustering in a group of stars with similar characteristics to the Sun, but it is mostly obscured by relatively few very large stars. Let's remove them and leave only stars within 50% deviation from a solar mass and radius of 1.
+		</p>
+		</center>
+	</div>
+	<br>
+	<div id="ImageTwo" style="min-height:100%;width:100%;border:">
+		<center>
+			<h2>Image 2</h2>
+		<br>
+		<img src="./Assets/ImageTwo.jpg" height="300px" width="500px" />
+		<p style="width: 50%; text-align:center; font-size:18px;">Minimum Jupiter mass: 0.0015 (about 1/3 of Earth's mass) Maximum Jupiter mass: 0.03 (about 10 Earths, proposed upper boundary for super-Earth planets) Minimum and maximum surface temperatures roughly equivalent to Earth's, with some margin (170 - 350 K)</p>
+		</center>
+	</div>
+</body>
+</html>

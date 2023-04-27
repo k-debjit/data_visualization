@@ -1,0 +1,12 @@
+[
+    {"area" : "HD 143761 b", 	"value": 1.05},
+    {"area" : "HD 143761 c", 	"value": 0.08},
+    {"area" : "KOI-1843.03", 	"value": 0.00},
+    {"area" : "KOI-1843.0", 	"value": 0},
+    {"area" : "KOI-1843.02",	"value": 0},
+    {"area" : "Kepler-9 b", 	"value": 0.25},
+    {"area" : "Kepler-9 c", 	"value": 0.17},
+    {"area" : "Kepler-9 d", 	"value": 0.02},
+    {"area" : "GJ 160.2 b", 	"value": 0.03},
+    {"area" : "Kepler-566", 	"value": 0}
+]

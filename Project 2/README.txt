@@ -1,0 +1,1 @@
+PLEASE INSTALL WAMP/XAMPP and put all these files in the www/htdocs folder and visit localhost.

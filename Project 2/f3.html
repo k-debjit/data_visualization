@@ -1,0 +1,106 @@
+<html>
+<head></head>
+<body>
+
+<div id="pieChart"></div>
+
+<script src="./Assets/d3.v4.min.js"></script>
+<script src="./Assets/d3pie.min.js"></script>
+<script>
+//Creating the pie with d3pie library
+var pie = new d3pie("pieChart", {
+	"header": {
+		"title": {
+			"fontSize": 22,
+			"font": "verdana"
+		},
+		"subtitle": {
+			"color": "#999999",
+			"fontSize": 10,
+			"font": "verdana"
+		},
+		"titleSubtitlePadding": 12
+	},
+	"footer": {
+		"color": "#999999",
+		"fontSize": 11,
+		"font": "open sans",
+		"location": "bottom-center"
+	},
+	"size": {
+		"pieOuterRadius": "80%"
+	},
+	"data": {
+		"content": [
+			{
+				"label": "Confirmed",
+				"value": 60,
+				"color": "#08a900"
+			},
+			{
+				"label": "Controversial",
+				"value": 30,
+				"color": "#c30000"
+			},
+			{
+				"label": "Not Defined",
+				"value": 10,
+				"color": "#393930"
+			}
+		]
+	},
+	"labels": {
+		"outer": {
+			"pieDistance": 10
+		},
+		"inner": {
+			"format": "value"
+		},
+		"mainLabel": {
+			"font": "verdana"
+		},
+		"percentage": {
+			"color": "#e1e1e1",
+			"font": "verdana",
+			"decimalPlaces": 0
+		},
+		"value": {
+			"color": "#e1e1e1",
+			"font": "verdana"
+		},
+		"lines": {
+			"enabled": true,
+			"color": "#cccccc"
+		},
+		"truncation": {
+			"enabled": true
+		}
+	},
+	"tooltips": {
+		"enabled": true,
+		"type": "placeholder",
+		"string": "{label}: {value}",
+		"styles": {
+			"backgroundOpacity": 0.75
+		}
+	},
+	"effects": {
+		"pullOutSegmentOnClick": {
+			"effect": "linear",
+			"speed": 400,
+			"size": 8
+		}
+	},
+	"misc": {
+		"canvasPadding": {
+			"top": 40,
+			"right": 40,
+			"bottom": 40,
+			"left": 40
+		}
+	}
+});
+</script>
+
+</body>
+</html>

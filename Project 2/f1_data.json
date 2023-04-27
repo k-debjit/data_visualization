@@ -1,0 +1,12 @@
+[
+    {"identifier" : "HD 143761 b", "Period": 39.85},
+    {"identifier" : "HD 143761 c", "Period": 102.54},
+    {"identifier" : "KOI-1843.03", "Period": 0.18},
+    {"identifier" : "KOI-1843.01", "Period": 4.19},
+    {"identifier" : "KOI-1843.02", "Period": 6.36},
+    {"identifier" : "Kepler-9 b", "Period ": 9.22},
+    {"identifier" : "Kepler-9 c", "Period ": 9.03},
+    {"identifier" : "Kepler-9 d", "Period": 0.03},
+    {"identifier" : "GJ 160.2 b", "Period": 0.24},
+    {"identifier" : "Kepler-566", "Period": 18.43}
+]

@@ -1,0 +1,2087 @@
+<!DOCTYPE>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stacked Bar Chart</title>
+
+<!-- JavaScript Libraries //-->
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="d3v3.js"></script>
+<script type="text/javascript" src="d3tip.js"></script>
+
+<!-- Local JS Files -->
+<script type="text/javascript" src="default.js"></script>
+
+<!-- CSS Style //-->
+<link href="default.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+    <center>
+        <br><br>
+        <p>In my case story telling aspect has been completely changed. At first, I designed graphs that showing arbitrary data without any relation between them. Later I came to know the visualization is about collecting raw data, finding common relations between them and portray the relation as a simple graph so that user can easily make the point out of the story.</p>
+        <p>Yes, the project changed over the last two months. Because It took me a little longer to drive the project right way. I thought planets were orbiting sun but it was wrong concept. Later on, I chose to visualize planet detection method and status.</p>
+        <p>Apparently, my project is simply showing two graphs of planet detection status and method. So far I don’t think there might be any chance of confusion.</p>
+        <div id="chart1"></div>
+        <div id="firstCheckboxHolder"></div>
+        <div id="chart2"></div>
+        <div id="secondCheckboxHolder"></div>
+    </center>
+</body>
+<script>
+    var highlightColor = 'red',
+    margin = {top: 20, right: 20, bottom: 30, left: 40},
+    usableWidth = 900,
+	width =  usableWidth - margin.left - margin.right,
+	height = (usableWidth * .55) - margin.top - margin.bottom,
+	height2 = height*0.75,
+    data = 
+    [
+        {
+            "identifier": "HD 4203 c",
+            "period": "6700days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2014"
+        },
+        {
+            "identifier": "HD 183263 c",
+            "period": "4684days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2008"
+        },
+        {
+            "identifier": "OGLE-05-390L b",
+            "period": "3500days",
+            "status": "Confirmed",
+            "method": "Microlensing",
+            "color": "orange",
+            "year": "2005"
+        },
+        {
+            "identifier": "HD 187123 c",
+            "period": "3324days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2007"
+        },
+        {
+            "identifier": "HD 66428 b",
+            "period": "2293days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2006"
+        },
+        {
+            "identifier": "HD 27631 b",
+            "period": "2208days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2011"
+        },
+        {
+            "identifier": "HD 12661 c",
+            "period": "1708days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2002"
+        },
+        {
+            "identifier": "HD 202206 c",
+            "period": "1383.4days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2004"
+        },
+        {
+            "identifier": "HD 175167 b",
+            "period": "1290days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2010"
+        },
+        {
+            "identifier": "HD 9174 b",
+            "period": "1179days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 114729 A b",
+            "period": "1135days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2002"
+        },
+        {
+            "identifier": "HD 128311 c",
+            "period": "910.7days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2005"
+        },
+        {
+            "identifier": "38 Vir b",
+            "period": "825.9days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "cyan",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-94 c",
+            "period": "820.3days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2014"
+        },
+        {
+            "identifier": "HD 5608 b",
+            "period": "792.6days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2012"
+        },
+        {
+            "identifier": "HD 183263 b",
+            "period": "625.1days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2004"
+        },
+        {
+            "identifier": "beta Ursae Minoris b",
+            "period": "522.3days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "HD 240210 b",
+            "period": "501.75days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2009"
+        },
+        {
+            "identifier": "HD 128311 b",
+            "period": "460.1days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2002"
+        },
+        {
+            "identifier": "HD 4203 b",
+            "period": "437.05days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2001"
+        },
+        {
+            "identifier": "KOI-1299 c",
+            "period": "406.2days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "HD 2952 b",
+            "period": "311.6days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2013"
+        },
+        {
+            "identifier": "Kepler-34(AB) b",
+            "period": "288.822days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2012"
+        },
+        {
+            "identifier": "HD 12661 b",
+            "period": "263.6days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2000"
+        },
+        {
+            "identifier": "HD 202206 b",
+            "period": "255.87days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2002"
+        },
+        {
+            "identifier": "Kepler-1085 b",
+            "period": "219.3218days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 154672 b",
+            "period": "163.91days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2008"
+        },
+        {
+            "identifier": "HD 156279 b",
+            "period": "131.05days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2011"
+        },
+        {
+            "identifier": "Kepler-603 c",
+            "period": "127.9076days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-344 c",
+            "period": "125.5968days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Gliese 3293 d",
+            "period": "123.98days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-266 c",
+            "period": "107.7236days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "HD 145377 b",
+            "period": "103.95days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2008"
+        },
+        {
+            "identifier": "HD 143761 c",
+            "period": "102.54days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-920 c",
+            "period": "100.8274days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-130 d",
+            "period": "87.51791days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1475 b",
+            "period": "82.17737days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-260 c",
+            "period": "76.05018days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-951 b",
+            "period": "71.52531days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-409 b",
+            "period": "68.9584days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-924 b",
+            "period": "61.03701days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-227 c",
+            "period": "54.41869days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-890 b",
+            "period": "52.75876days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "KOI-1299 b",
+            "period": "52.50097days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-827 b",
+            "period": "51.92928days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "KIC 6185331 b",
+            "period": "49.76971days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2011"
+        },
+        {
+            "identifier": "Kepler-196 c",
+            "period": "47.42774days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-942 b",
+            "period": "44.96417days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1326 b",
+            "period": "42.35143days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-906 b",
+            "period": "41.698days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-706 b",
+            "period": "41.40831days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 164595 b",
+            "period": "40days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2015"
+        },
+        {
+            "identifier": "HD 143761 b",
+            "period": "39.8458days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-725 b",
+            "period": "39.64318days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 72892 b",
+            "period": "39.475days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-9 c",
+            "period": "39.03106days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2010"
+        },
+        {
+            "identifier": "Kepler-1043 b",
+            "period": "38.50534days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1255 b",
+            "period": "36.29193days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-395 c",
+            "period": "34.98926days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-166 c",
+            "period": "34.26days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-819 b",
+            "period": "33.19956days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-277 c",
+            "period": "33.006days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-784 b",
+            "period": "31.59226days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-805 b",
+            "period": "30.86389days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-150 e",
+            "period": "30.82656days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Gliese 3293 b",
+            "period": "30.6days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-795 b",
+            "period": "29.61934days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-214 c",
+            "period": "28.7798days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-699 b",
+            "period": "27.80756days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-130 c",
+            "period": "27.50865days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-977 b",
+            "period": "26.85328days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "TYC 3667-1280-1 b",
+            "period": "26.468days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-131 c",
+            "period": "25.5169days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-257 d",
+            "period": "24.66455days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1069 b",
+            "period": "23.89903days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-128 c",
+            "period": "22.804days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2013"
+        },
+        {
+            "identifier": "Kepler-344 b",
+            "period": "21.96395days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "HD 106315 c",
+            "period": "21.0576days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "cyan",
+            "year": "2017"
+        },
+        {
+            "identifier": "Kepler-603 b",
+            "period": "21.05359days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-196 b",
+            "period": "20.73989days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-247 d",
+            "period": "20.47791days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-859 b",
+            "period": "20.38178days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1417 b",
+            "period": "20.35052days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-189 c",
+            "period": "20.13487days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-9 b",
+            "period": "19.22418days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2010"
+        },
+        {
+            "identifier": "Kepler-1187 b",
+            "period": "18.87064days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-153 b",
+            "period": "18.87023days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-225 c",
+            "period": "18.79423days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-566 b",
+            "period": "18.42795days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "EPIC 201855371 b",
+            "period": "17.96753days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-277 b",
+            "period": "17.324days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-170 c",
+            "period": "16.66586days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1306 b",
+            "period": "16.29595days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-131 b",
+            "period": "16.092days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-709 b",
+            "period": "16.08525days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-156 c",
+            "period": "15.9068days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Gliese 86 b",
+            "period": "15.76491days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2000"
+        },
+        {
+            "identifier": "Kepler-214 b",
+            "period": "15.66054days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "EPIC 206011691 c",
+            "period": "15.5012days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-128 b",
+            "period": "15.09days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2013"
+        },
+        {
+            "identifier": "Kepler-404 c",
+            "period": "14.75117days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-791 b",
+            "period": "14.55398days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-242 c",
+            "period": "14.49648days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-626 b",
+            "period": "14.48585days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 179079 b",
+            "period": "14.476days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2009"
+        },
+        {
+            "identifier": "Kepler-1112 b",
+            "period": "14.36268days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-327 d",
+            "period": "13.96946days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-654 b",
+            "period": "13.72465days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-834 b",
+            "period": "13.32388days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-150 d",
+            "period": "12.56093days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1256 b",
+            "period": "12.41278days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-431 d",
+            "period": "11.922days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-404 b",
+            "period": "11.82985days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "CoRoT-24 c",
+            "period": "11.759days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-794 b",
+            "period": "11.13125days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-568 b",
+            "period": "11.02347days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-189 b",
+            "period": "10.39993days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1380 b",
+            "period": "10.31082days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-761 b",
+            "period": "10.12805days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1639 b",
+            "period": "9.878482days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-579 b",
+            "period": "9.668577days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 106315 b",
+            "period": "9.5521days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "cyan",
+            "year": "2017"
+        },
+        {
+            "identifier": "Kepler-504 b",
+            "period": "9.549275days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1483 b",
+            "period": "9.508516days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-227 b",
+            "period": "9.488015days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-247 c",
+            "period": "9.439452days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1329 b",
+            "period": "9.336466days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "EPIC 206011691 b",
+            "period": "9.32414days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-1111 b",
+            "period": "8.796179days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-431 c",
+            "period": "8.703days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-815 b",
+            "period": "8.575036days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-518 b",
+            "period": "8.512036days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-130 b",
+            "period": "8.457458days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-242 b",
+            "period": "8.20395days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-260 b",
+            "period": "8.187399days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-173 c",
+            "period": "8.005777days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1289 b",
+            "period": "7.990196days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-170 b",
+            "period": "7.930592days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-166 b",
+            "period": "7.650254days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-150 c",
+            "period": "7.381998days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-395 b",
+            "period": "7.054346days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-431 b",
+            "period": "6.803days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-225 b",
+            "period": "6.738975days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-294 c",
+            "period": "6.6264days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-266 b",
+            "period": "6.61833days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-257 c",
+            "period": "6.581484days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-920 b",
+            "period": "6.531927days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HD 68988 b",
+            "period": "6.276days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2001"
+        },
+        {
+            "identifier": "Kepler-91 b",
+            "period": "6.24668days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2013"
+        },
+        {
+            "identifier": "Kepler-603 d",
+            "period": "6.217129days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1071 b",
+            "period": "6.179984days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-211 c",
+            "period": "6.04045days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-101 c",
+            "period": "6.02976days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-864 b",
+            "period": "5.833761days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1011 b",
+            "period": "5.753222days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-728 b",
+            "period": "5.743477days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-968 c",
+            "period": "5.709405days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1314 b",
+            "period": "5.424749days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "GJ 160.2 b",
+            "period": "5.2354days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-327 c",
+            "period": "5.212333days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "CoRoT-24 b",
+            "period": "5.1134days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-663 b",
+            "period": "4.996783days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-156 b",
+            "period": "4.973456days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-918 b",
+            "period": "4.853869days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-213 c",
+            "period": "4.822962days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-548 b",
+            "period": "4.454194days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1105 b",
+            "period": "4.421572days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "WASP-62 b",
+            "period": "4.411953days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2011"
+        },
+        {
+            "identifier": "Kepler-173 b",
+            "period": "4.263742days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "WASP-127 b",
+            "period": "4.178062days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "KELT-10 b",
+            "period": "4.166286days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "Kepler-211 b",
+            "period": "4.138575days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1145 b",
+            "period": "3.970768days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1394 b",
+            "period": "3.937664days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1612 b",
+            "period": "3.917951days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "WASP-11 b",
+            "period": "3.722469days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2008"
+        },
+        {
+            "identifier": "Kepler-294 b",
+            "period": "3.701212days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-968 b",
+            "period": "3.692984days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "WASP-138 b",
+            "period": "3.634433days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1065 b",
+            "period": "3.609309days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-8 b",
+            "period": "3.52254days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2010"
+        },
+        {
+            "identifier": "HD 75289 A b",
+            "period": "3.5098days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-101 b",
+            "period": "3.487681days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-150 b",
+            "period": "3.428054days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1346 b",
+            "period": "3.401657days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "WASP-124 b",
+            "period": "3.37265days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1343 b",
+            "period": "3.351832days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-247 b",
+            "period": "3.33616days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1049 b",
+            "period": "3.273461days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-44 b",
+            "period": "3.246729days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2011"
+        },
+        {
+            "identifier": "HATS-28 b",
+            "period": "3.181078days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-708 b",
+            "period": "3.167892days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "OGLE-TR-10 b",
+            "period": "3.10129days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2004"
+        },
+        {
+            "identifier": "HD 187123 b",
+            "period": "3.096589days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-695 b",
+            "period": "3.04033days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "K2-34 b",
+            "period": "2.995607days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HAT-P-56 b",
+            "period": "2.790833days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2015"
+        },
+        {
+            "identifier": "WASP-49 b",
+            "period": "2.781739days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2011"
+        },
+        {
+            "identifier": "CoRoT-21 b",
+            "period": "2.72474days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2011"
+        },
+        {
+            "identifier": "WASP-82 b",
+            "period": "2.705782days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2013"
+        },
+        {
+            "identifier": "WASP-108 b",
+            "period": "2.675546days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Gliese 3634 b",
+            "period": "2.64561days",
+            "status": "Confirmed",
+            "method": "RV",
+            "color": "blue",
+            "year": "2011"
+        },
+        {
+            "identifier": "Kepler-1575 b",
+            "period": "2.553142days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-327 b",
+            "period": "2.549575days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-94 b",
+            "period": "2.50806days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-213 b",
+            "period": "2.46236days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-611 b",
+            "period": "2.437033days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-257 b",
+            "period": "2.382667days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-1065 c",
+            "period": "2.370307days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "WASP-14 b",
+            "period": "2.243766days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2008"
+        },
+        {
+            "identifier": "wasp-92 b",
+            "period": "2.174674days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "Kepler-1099 b",
+            "period": "2.168453days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-843 b",
+            "period": "2.05388days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-821 b",
+            "period": "1.922799days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-554 b",
+            "period": "1.902209days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "EPIC 211990866 b",
+            "period": "1.673916days",
+            "status": "Confirmed",
+            "method": "null",
+            "color": "cyan",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-9 d",
+            "period": "1.592851days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2010"
+        },
+        {
+            "identifier": "Gliese 1214 b",
+            "period": "1.580404days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2009"
+        },
+        {
+            "identifier": "Kepler-166 d",
+            "period": "1.554004days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2014"
+        },
+        {
+            "identifier": "Kepler-756 b",
+            "period": "1.224866days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "WASP-33 b",
+            "period": "1.21987days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2010"
+        },
+        {
+            "identifier": "Kepler-1037 b",
+            "period": "1.063789days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "KELT-16 b",
+            "period": "0.968995days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "HATS-18 b",
+            "period": "0.837843days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "Kepler-1368 b",
+            "period": "0.675649days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2016"
+        },
+        {
+            "identifier": "CVSO 30 b",
+            "period": "0.448413days",
+            "status": "Confirmed",
+            "method": "Transit",
+            "color": "green",
+            "year": "2012"
+        },
+        {
+            "identifier": "HD 131664 b",
+            "period": "1951days",
+            "status": "Controversial",
+            "method": "RV",
+            "color": "red",
+            "year": "null"
+        },
+        {
+            "identifier": "HD 122430 b",
+            "period": "344.95days",
+            "status": "Controversial",
+            "method": "RV",
+            "color": "red",
+            "year": "2003"
+        },
+        {
+            "identifier": "HIP 11952 b",
+            "period": "290days",
+            "status": "Controversial",
+            "method": "RV",
+            "color": "red",
+            "year": "2012"
+        },
+        {
+            "identifier": "Gliese 3293 c",
+            "period": "48.14days",
+            "status": "Controversial",
+            "method": "RV",
+            "color": "red",
+            "year": "2014"
+        },
+        {
+            "identifier": "Rho Coronae Borealis b",
+            "period": "39.8449days",
+            "status": "Controversial",
+            "method": "RV",
+            "color": "red",
+            "year": "1997"
+        },
+        {
+            "identifier": "EPIC 201828749 b",
+            "period": "33.51569days",
+            "status": "Controversial",
+            "method": "Transit",
+            "color": "red",
+            "year": "2015"
+        },
+        {
+            "identifier": "EPIC 201403446 b",
+            "period": "19.15344days",
+            "status": "Controversial",
+            "method": "Transit",
+            "color": "red",
+            "year": "2015"
+        },
+        {
+            "identifier": "HIP 11952 c",
+            "period": "6.95days",
+            "status": "Controversial",
+            "method": "RV",
+            "color": "red",
+            "year": "2012"
+        },
+        {
+            "identifier": "KOI-1843.02",
+            "period": "6.356006days",
+            "status": "Controversial",
+            "method": "Transit",
+            "color": "red",
+            "year": "null"
+        },
+        {
+            "identifier": "GJ 160.2 b",
+            "period": "5.2354days",
+            "status": "Controversial",
+            "method": "null",
+            "color": "pink",
+            "year": "null"
+        },
+        {
+            "identifier": "KOI-1843.01",
+            "period": "4.194525days",
+            "status": "Controversial",
+            "method": "Transit",
+            "color": "red",
+            "year": "null"
+        },
+        {
+            "identifier": "KOI-1843.03",
+            "period": "0.176891days",
+            "status": "Controversial",
+            "method": "Transit",
+            "color": "red",
+            "year": "2012"
+        },
+        {
+            "identifier": "CVSO 30 c",
+            "period": "null",
+            "status": "null",
+            "method": "Imaging",
+            "color": "yellow",
+            "year": "2016"
+        },
+        {
+            "identifier": "OGLE-2015-BLG-0954L b",
+            "period": "null",
+            "status": "null",
+            "method": "null",
+            "color": "yellow",
+            "year": "2016"
+        },
+        {
+            "identifier": "CHXR 73 b",
+            "period": "null",
+            "status": "null",
+            "method": "Imaging",
+            "color": "yellow",
+            "year": "2006"
+        }
+    ];
+
+    //separating all different methods from the raw data
+    var methods = Array.from(new Set(data.map(function(d) {
+        return d.method;
+    })));
+    
+    //separating all different statuses from the raw data
+    var statuses = Array.from(new Set(data.map(function(d) {
+        return d.status;
+    })));
+    
+    //separating all different years from the raw data
+    var years = Array.from(new Set(data.map(function(d) {
+        return d.year;
+    })));
+
+    //separating all different planets from the raw data
+    var planets = Array.from(new Set(data.map(function(d) {
+        return d.identifier;
+    })));
+
+    //transforming the data to be usable with d3.stack()
+    var newData1 = []
+    for (i in methods) {
+        val = {}
+        val['method'] = methods[i]
+        for (k in planets) {
+        val[planets[k]] = 0
+        }
+        for (j in data) {
+        if (data[j]['method'] == methods[i]) {
+            for (k2 in planets) {
+            if (planets[k2] == data[j]['identifier']) {
+                val[data[j]['identifier']] += 1
+            }
+            }
+        }
+        }
+        newData1.push(val)
+    }
+    console.log(newData1);
+
+    //transforming the data to be usable with d3.stack()
+    var newData2 = []
+    for (i in statuses) {
+        val = {}
+        val['status'] = statuses[i]
+        for (k in planets) {
+        val[planets[k]] = 0
+        }
+        for (j in data) {
+        if (data[j]['status'] == statuses[i]) {
+            for (k2 in planets) {
+            if (planets[k2] == data[j]['identifier']) {
+                val[data[j]['identifier']] += 1
+            }
+            }
+        }
+        }
+        newData2.push(val)
+    }
+    console.log(newData2);
+    
+    //making checkboxes to highlight columns in figure one
+    newData1.forEach(function(d){
+        $("#firstCheckboxHolder").append("<input type='checkbox' class='firstCheckbox' value='method"+ d.method +"'>\t" + d.method);
+    });
+
+    //when checkbox clicked highlight columns
+    $('.firstCheckbox').change(function(){
+        if($(this).is(":checked"))
+            highlight($(this).val());
+        else
+            unHighlight($(this).val());
+    });
+
+    //making checkboxes to highlight columns in figure one
+    newData2.forEach(function(d){
+        $("#secondCheckboxHolder").append("<input type='checkbox' class='secondCheckbox' value='status"+ d.status +"'>\t" + d.status );
+    });
+
+    //when checkbox clicked highlight columns
+    $('.secondCheckbox').change(function(){
+        if($(this).is(":checked"))
+            highlight($(this).val());
+        else
+            unHighlight($(this).val());
+    });
+
+    //highligh function
+    function highlight(className)
+    {
+        var elems = document.getElementsByClassName(className);
+
+        for(var i=0; i< elems.length; i++){
+            elems[i].setAttribute("stroke",highlightColor);
+            elems[i].setAttribute("stroke-width",2);
+        }
+    }
+
+    //function to remove highlighting
+    function unHighlight(className)
+    {
+        var elems = document.getElementsByClassName(className);
+
+        for(var i=0; i< elems.length; i++){
+            elems[i].setAttribute("stroke","pink");
+            elems[i].setAttribute("stroke-width",0);
+        }
+    }
+
+    //rendering the graphs
+    renderChart(newData1, "#chart1", colorScheme, 'Planet Discovery Method', data, 'method');
+    renderChart(newData2, "#chart2", colorScheme, 'Planet Detectoion Status', data, 'status');
+    var colorScheme = ["#E57373"];
+
+</script>
+</html>
